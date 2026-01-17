@@ -2,6 +2,11 @@ pipeline {
   agent any
 
   stages {
+     stage('Debug workspace') {
+    steps {
+        sh 'ls -R'
+        }
+    }
     stage('Checkout') {
       steps {
         checkout scm
