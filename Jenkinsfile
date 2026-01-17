@@ -2,26 +2,21 @@ pipeline {
   agent any
 
   stages {
-     stage('Debug workspace') {
-    steps {
-        sh 'ls -R'
-        }
-    }
     stage('Checkout') {
       steps {
         checkout scm
       }
     }
 
-    stage('Run Node Script') {
+    stage('Build Image') {
       steps {
-        sh '''
-          docker run --rm \
-            -v "$WORKSPACE":/app \
-            -w /app \
-            node:18 \
-            node src/index.js
-        '''
+        sh 'docker build -t node-jenkins-test .'
+      }
+    }
+
+    stage('Run App') {
+      steps {
+        sh 'docker run --rm node-jenkins-test'
       }
     }
   }
